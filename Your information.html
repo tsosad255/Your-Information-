@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Profile Setup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            color: #ff6f61;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff6f61;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #e65c55;
+        }
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-links a {
+            margin: 0 10px;
+            font-size: 48px;
+            color: #333;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            color: #ff6f61;
+        }
+        .hidden {
+            display: none;
+        }
+        .form-header {
+            margin-bottom: 20px;
+        }
+        .profile-summary {
+            text-align: left;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-summary h2 {
+            color: #ff6f61;
+            margin-bottom: 10px;
+        }
+        .profile-summary p {
+            margin: 5px 0;
+        }
+        .profile-summary img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .error-message {
+            color: #e65c55;
+            font-size: 14px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+        .decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 105, 135, 0.6), rgba(255, 255, 255, 0));
+            animation: float 6s infinite ease-in-out;
+        }
+        .circle.small {
+            width: 80px;
+            height: 80px;
+            top: 15%;
+            left: 25%;
+        }
+        .circle.medium {
+            width: 120px;
+            height: 120px;
+            top: 70%;
+            left: 80%;
+        }
+        .circle.large {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 40%;
+        }
+        .flower {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ffcccb, #ff6f61);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: spin 8s linear infinite;
+        }
+        .flower.small {
+            width: 60px;
+            height: 60px;
+        }
+        .flower.large {
+            width: 120px;
+            height: 120px;
+        }
+        .star {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: float 10s infinite ease-in-out;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+        }
+        .star.small {
+            width: 20px;
+            height: 20px;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* CSS for avatar with letter "T" in the center */
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background-color: #ddd; /* Gray color for avatar background */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #fff;
+            text-align: center;
+            margin-right: 15px;
+        }
+
+        /* New style for social media icons screen */
+        .social-screen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            z-index: 10;
+            padding: 0 20px;  /* Reduced padding to avoid excess space */
+        }
+
+        .social-screen a {
+            margin: 20px;
+            font-size: 80px;
+            color: #333;
+            text-decoration: none;
+        }
+        .social-screen a:hover {
+            color: #ff6f61;
+        }
+
+        /* Fixed style for the social media section */
+        .social-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        function validateForm(formId) {
+            const inputs = document.querySelectorAll(`#${formId} input`);
+            let valid = true;
+            inputs.forEach(input => {
+                if (!input.value) {
+                    const error = document.createElement('div');
+                    error.classList.add('error-message');
+                    error.textContent = `Please fill out the ${input.placeholder} field.`;
+                    if (!input.nextElementSibling || !input.nextElementSibling.classList.contains('error-message')) {
+                        input.insertAdjacentElement('afterend', error);
+                    }
+                    valid = false;
+                } else if (input.nextElementSibling && input.nextElementSibling.classList.contains('error-message')) {
+                    input.nextElementSibling.remove();
+                }
+            });
+            return valid;
+        }
+
+        function showNextForm(currentFormId, nextFormId) {
+            if (validateForm(currentFormId)) {
+                document.getElementById(currentFormId).classList.add('hidden');
+                document.getElementById(nextFormId).classList.remove('hidden');
+            }
+        }
+
+        function showSocialOptions() {
+            // Hide profile form and display social options
+            document.getElementById('profileForm').classList.add('hidden');
+            document.getElementById('socialScreen').style.display = 'flex';
+        }
+
+        function redirectToFacebook() {
+            const facebookLink = document.getElementById('facebook').value;
+            window.location.href = facebookLink;
+        }
+    </script>
+</head>
+<body>
+    <div class="decorations">
+        <!-- Ngôi sao và hoa trang trí trong nền -->
+        <div class="circle small"></div>
+        <div class="circle medium"></div>
+        <div class="circle large"></div>
+        <div class="flower small" style="top: 30%; left: 10%;"></div>
+        <div class="flower large" style="top: 80%; left: 60%;"></div>
+        <div class="flower large" style="top: 20%; left: 40%;"></div>
+        <div class="flower small" style="top: 50%; left: 80%;"></div>
+        <div class="star small" style="top: 50%; left: 20%;"></div>
+        <div class="star large" style="top: 10%; left: 80%;"></div>
+        <div class="star small" style="top: 70%; left: 30%;"></div>
+        <div class="star small" style="top: 20%; left: 60%;"></div>
+        <div class="star large" style="top: 80%; left: 10%;"></div>
+    </div>
+
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h1>Login</h1>
+            <div class="form-header" style="display: flex; align-items: center; justify-content: center;">
+                <!-- Display Avatar and Creator's Name -->
+                <div class="avatar">T</div>
+                <h2 style="color: #ff6f61; font-size: 24px; margin-left: 10px;">Creator: Thanh Nguyễn </h2>
+            </div>
+            <p>Enter your email and password to continue.</p>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button onclick="showNextForm('loginForm', 'profileForm')">Next</button>
+        </div>
+
+        <!-- Profile Setup Form -->
+        <div id="profileForm" class="hidden">
+            <h1>Profile Setup</h1>
+            <div class="form-header">
+                <!-- Display Avatar and Creator's Name at the end of the profile setup -->
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <div class="avatar">T</div>
+                    <h2 style="color: #ff6f61; font-size: 24px; margin-left: 10px;">Creator: Thanh Nguyễn</h2>
+                </div>
+                <p>Complete your profile by filling out your details.</p>
+            </div>
+
+            <input id="name" type="text" placeholder="Full Name" required>
+            <input id="age" type="number" placeholder="Age" required>
+            <input id="dob" type="date" placeholder="Date of Birth" required>
+            <input id="location" type="text" placeholder="Location" required>
+            <input id="profession" type="text" placeholder="Profession" required>
+            <input id="hobbies" type="text" placeholder="Hobbies (comma separated)" required>
+            <input id="facebook" type="url" placeholder="Facebook Profile Link" required>
+            <button onclick="showSocialOptions()">Click</button>
+        </div>
+
+        <!-- Social Media Icons Screen -->
+        <div id="socialScreen" class="social-screen">
+            <a href="#" onclick="redirectToFacebook()"><i class="fab fa-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+    </div>
+</body>
+</html>
